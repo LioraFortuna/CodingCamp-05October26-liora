@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/script.js"></script>
+  </head>
+  <body>
+    <!-- Theme Toggle -->
+    <header class="site-header">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme">
+        🌙 Dark Mode
+      </button>
+    </header>
+
+    <main class="dashboard">
+
+      <!-- Greeting / Clock Section -->
+      <section id="greeting-section" class="card">
+        <p id="greeting-phrase" class="greeting-phrase">Good Morning!</p>
+        <p id="clock-display" class="clock-display">00:00:00</p>
+        <p id="date-display" class="date-display">Monday, January 1, 2024</p>
+
+        <form id="name-form" class="name-form" novalidate>
+          <label for="name-input" class="form-label">Your name:</label>
+          <div class="input-row">
+            <input
+              type="text"
+              id="name-input"
+              class="text-input"
+              placeholder="Enter your name"
+              maxlength="50"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+        <p id="name-error" class="error-message" role="alert" aria-live="polite"></p>
+      </section>
+
+      <!-- Focus Timer Section -->
+      <section id="timer-section" class="card">
+        <h2 class="section-title">Focus Timer</h2>
+        <p id="timer-display" class="timer-display">25:00</p>
+
+        <div id="timer-notification" class="timer-notification" role="alert" aria-live="polite" hidden>
+          🎉 Focus session complete! Great work.
+        </div>
+
+        <div class="timer-controls">
+          <button id="timer-start" class="btn btn-primary">Start</button>
+          <button id="timer-stop" class="btn btn-secondary" disabled>Stop</button>
+          <button id="timer-reset" class="btn btn-secondary">Reset</button>
+        </div>
+      </section>
+
+      <!-- To-Do List Section -->
+      <section id="task-section" class="card">
+        <h2 class="section-title">To-Do List</h2>
+
+        <form id="task-form" class="task-form" novalidate>
+          <div class="input-row">
+            <input
+              type="text"
+              id="task-input"
+              class="text-input"
+              placeholder="Add a new task…"
+              maxlength="255"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </form>
+        <p id="task-error" class="error-message" role="alert" aria-live="polite"></p>
+
+        <ul id="task-list" class="task-list" aria-label="Task list">
+          <li id="task-empty-state" class="empty-state">No tasks yet. Add one above!</li>
+        </ul>
+      </section>
+
+      <!-- Quick Links Section -->
+      <section id="links-section" class="card">
+        <h2 class="section-title">Quick Links</h2>
+
+        <form id="link-form" class="link-form" novalidate>
+          <div class="form-group">
+            <label for="link-label-input" class="form-label">Label:</label>
+            <input
+              type="text"
+              id="link-label-input"
+              class="text-input"
+              placeholder="e.g. GitHub"
+              maxlength="50"
+              autocomplete="off"
+            />
+            <p id="link-label-error" class="error-message" role="alert" aria-live="polite"></p>
+          </div>
+          <div class="form-group">
+            <label for="link-url-input" class="form-label">URL:</label>
+            <input
+              type="url"
+              id="link-url-input"
+              class="text-input"
+              placeholder="https://example.com"
+              maxlength="2048"
+              autocomplete="off"
+            />
+            <p id="link-url-error" class="error-message" role="alert" aria-live="polite"></p>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Link</button>
+        </form>
+
+        <div id="links-panel" class="links-panel" aria-label="Saved links"></div>
+      </section>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,634 @@
+/* =============================================================
+   Life Dashboard — css/style.css
+   Clean, minimal single-page dashboard with light / dark themes
+   ============================================================= */
+
+/* ---------------------------------------------------------------
+   1. THEME CUSTOM PROPERTIES
+   Light theme is the default (defined on :root).
+   Dark overrides are applied via [data-theme="dark"] on <html>.
+   --------------------------------------------------------------- */
+:root {
+  /* Backgrounds */
+  --color-bg: #f0f2f5;
+  --color-surface: #ffffff;
+
+  /* Text */
+  --color-text: #1a1a2e;
+  --color-text-muted: #6b7280;
+
+  /* Accent */
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+
+  /* Structure */
+  --color-border: #e5e7eb;
+
+  /* Semantic */
+  --color-error: #dc2626;
+  --color-success: #16a34a;
+  --color-notification-bg: #dcfce7;
+  --color-notification-text: #166534;
+  --color-notification-border: #86efac;
+
+  /* Shadows */
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.08), 0 2px 12px rgba(0, 0, 0, 0.06);
+
+  /* Spacing & radius */
+  --radius-card: 12px;
+  --radius-input: 6px;
+  --radius-btn: 6px;
+
+  /* Typography */
+  --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0f0f1a;
+  --color-surface: #1e1e2e;
+  --color-text: #e2e8f0;
+  --color-text-muted: #9ca3af;
+  --color-primary: #818cf8;
+  --color-primary-hover: #6366f1;
+  --color-border: #374151;
+  --color-error: #f87171;
+  --color-success: #4ade80;
+  --color-notification-bg: #14532d;
+  --color-notification-text: #bbf7d0;
+  --color-notification-border: #166534;
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.4), 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------------------------------------------------------------
+   2. GLOBAL RESET & BASE
+   --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Prevent FOUC flash — set by script.js Phase 1 before first paint */
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-stack);
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100%;
+  /* Smooth color transitions when toggling theme */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Remove default list styling globally where needed */
+ul {
+  list-style: none;
+}
+
+/* ---------------------------------------------------------------
+   3. FOCUS INDICATORS
+   Visible outlines for all interactive elements (accessibility)
+   --------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-input);
+}
+
+/* Remove default outline only when :focus-visible is supported */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------------------------------------------------------------
+   4. SITE HEADER & THEME TOGGLE
+   --------------------------------------------------------------- */
+.site-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  font-family: var(--font-stack);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px; /* pill shape */
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--color-border);
+}
+
+.theme-toggle-btn:active {
+  opacity: 0.85;
+}
+
+/* ---------------------------------------------------------------
+   5. DASHBOARD LAYOUT
+   --------------------------------------------------------------- */
+.dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ---------------------------------------------------------------
+   6. CARD
+   --------------------------------------------------------------- */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: 1.25rem;
+}
+
+/* ---------------------------------------------------------------
+   7. SHARED FORM PRIMITIVES
+   --------------------------------------------------------------- */
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 0.35rem;
+}
+
+.text-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-stack);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  transition: border-color 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+  min-width: 0; /* prevent overflow inside flex rows */
+}
+
+.text-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.text-input:hover {
+  border-color: var(--color-primary);
+}
+
+.text-input:focus {
+  border-color: var(--color-primary);
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Row: input + button side by side */
+.input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.input-row .text-input {
+  flex: 1;
+}
+
+/* Stacked form group (label + input + error) */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------------------------------------------------------------
+   8. BUTTONS
+   --------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-stack);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+  line-height: 1.4;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Primary — filled accent */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+.btn-primary:not(:disabled):hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-primary:not(:disabled):active {
+  opacity: 0.85;
+}
+
+/* Secondary — outline style */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:not(:disabled):hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-secondary:not(:disabled):active {
+  opacity: 0.8;
+}
+
+/* Small variant used in task-list item controls */
+.btn-sm {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+/* Danger variant for delete actions */
+.btn-danger {
+  background-color: transparent;
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.btn-danger:not(:disabled):hover {
+  background-color: var(--color-error);
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------------
+   9. ERROR & VALIDATION MESSAGES
+   --------------------------------------------------------------- */
+.error-message {
+  font-size: 0.8rem;
+  color: var(--color-error);
+  min-height: 1.1em; /* reserve space so layout doesn't jump */
+  margin-top: 0.25rem;
+}
+
+/* Hide when empty — JS sets textContent to "" to clear */
+.error-message:empty {
+  display: none;
+}
+
+/* ---------------------------------------------------------------
+   10. GREETING SECTION  (#greeting-section)
+   --------------------------------------------------------------- */
+#greeting-section {
+  text-align: center;
+}
+
+.greeting-phrase {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
+}
+
+.clock-display {
+  font-family: var(--font-mono);
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+}
+
+.date-display {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.name-form {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.name-form .form-label {
+  text-align: left;
+}
+
+#name-error {
+  text-align: left;
+  max-width: 420px;
+  margin: 0.25rem auto 0;
+}
+
+/* ---------------------------------------------------------------
+   11. TIMER SECTION  (#timer-section)
+   --------------------------------------------------------------- */
+.timer-display {
+  font-family: var(--font-mono);
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Timer end notification — visually prominent, green-ish */
+.timer-notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--color-notification-bg);
+  color: var(--color-notification-text);
+  border: 1px solid var(--color-notification-border);
+  border-radius: var(--radius-input);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* hidden attribute removes it from flow; JS toggles the hidden attribute */
+.timer-notification[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------
+   12. TASK SECTION  (#task-section)
+   --------------------------------------------------------------- */
+.task-form {
+  margin-bottom: 0.25rem;
+}
+
+#task-error {
+  margin-bottom: 0.75rem;
+}
+
+/* Task list */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* Empty-state placeholder */
+.empty-state {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 1.25rem 0;
+  font-style: italic;
+}
+
+/* Individual task list item */
+.task-list li:not(.empty-state) {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.task-list li:not(.empty-state):hover {
+  border-color: var(--color-primary);
+}
+
+/* Completion checkbox */
+.task-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* Task title span (pending state) */
+.task-list li .task-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  word-break: break-word;
+}
+
+/* Done task title: strikethrough + muted */
+.task-list li .task-title.task-done {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* Controls group within each task item */
+.task-controls {
+  display: flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+/* Inline edit input replaces task title */
+.task-edit-input {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  font-family: var(--font-stack);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-input);
+  min-width: 0;
+}
+
+.task-edit-input:focus {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------
+   13. QUICK LINKS SECTION  (#links-section)
+   --------------------------------------------------------------- */
+.link-form {
+  margin-bottom: 1rem;
+}
+
+.link-form .btn-primary {
+  margin-top: 0.25rem;
+}
+
+/* Links panel — wrapping flex grid */
+.links-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* Individual link chip */
+.link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.3rem 0.25rem 0.9rem;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px; /* pill */
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.link-item:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+}
+
+/* The button that opens the link, styled as the chip's label */
+.link-open {
+  padding: 0.2rem 0;
+  font-family: var(--font-stack);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  word-break: break-word;
+}
+
+.link-open:hover {
+  text-decoration: underline;
+}
+
+/* Small round remove button inside the chip */
+.link-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  font-family: var(--font-stack);
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.link-delete:hover {
+  background-color: var(--color-error);
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------------
+   14. RESPONSIVE ADJUSTMENTS
+   --------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 1rem 0.75rem 2rem;
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem 1rem;
+  }
+
+  .clock-display {
+    font-size: 2.2rem;
+  }
+
+  .timer-display {
+    font-size: 2.75rem;
+  }
+
+  .greeting-phrase {
+    font-size: 1.35rem;
+  }
+
+  .input-row {
+    flex-direction: column;
+  }
+
+  .input-row .btn {
+    width: 100%;
+  }
+
+  .timer-controls {
+    gap: 0.5rem;
+  }
+
+  .timer-controls .btn {
+    flex: 1;
+    min-width: 80px;
+  }
+}
